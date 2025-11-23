@@ -4,7 +4,7 @@ class Trainer(models.Model):
     name = models.CharField(max_length=255)
     age = models.PositiveIntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
-    update_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
@@ -15,7 +15,7 @@ class Pokemon(models.Model):
     height = models.IntegerField()
     weight = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
-    update_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name

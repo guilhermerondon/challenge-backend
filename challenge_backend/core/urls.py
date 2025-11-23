@@ -1,4 +1,5 @@
 from django.urls import path
+from .views import PokeAPIView
 from .views import (
   TrainerListCreateView, PokemonListCreateView, TrainerPokemonCreateView, TrainerDetailView, PokemonDetailView, TrainerPokemonDeleteView
 )
@@ -12,4 +13,6 @@ urlpatterns = [
 
     path('trainer-pokemons/', TrainerPokemonCreateView.as_view()),
     path('trainer-pokemons/<int:pk>/', TrainerPokemonDeleteView.as_view()),
+
+    path('pokeapi/<str:pokemon_name>/', PokeAPIView.as_view()),
 ]  
