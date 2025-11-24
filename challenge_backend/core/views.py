@@ -44,7 +44,7 @@ class PokeAPIView(APIView):
 
         response = requests.get(url)
 
-        if response.status_code == 200:
+        if response.status_code != 200:
             return Response(
                 {"error": "Pokémon não encontrado"},
                 status=status.HTTP_404_NOT_FOUND
@@ -60,3 +60,40 @@ class PokeAPIView(APIView):
         }
 
         return Response(pokemon_data, status=status.HTTP_200_OK)
+    
+
+class PokemonBattleView(APIView):
+    def get(self, request, pokemon1_id, pokemon2_id):
+        try:
+            p1 = Pokemon.objects.get(id=pokemon1_id)
+            p2 = Pokemon.objects.get(id=pokemon2_id)
+        except Pokemon.DoesNotExist:
+            return Response(
+                {"error": "Um ou ambos os Pokémons não foram encontrados."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        trainers_p1 = TrainerPokemon.objects.filter(pokemon1=p1).values_list("trainer_id", flat=True)
+        trainers_p2 = TrainerPokemon.objects.filter(pokemon2=p2).values_list("trainer_id", flat=True)
+
+        if set(trainers_p1).intersection(set(trainers_p2)):
+            return Response(
+                {"error": "Os Pokémons pertencem ao mesmo treinador."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        if p1.weight > p2.weight:
+            return Response(
+                {"Vencedor": p1.name, "Derrotado": p2.name},
+                status=status.HTTP_200_OK
+            )
+        elif p2.weight > p1.weight:
+            return Response(
+                {"Vencedor": p2.name, "Derrotado": p1.name},
+                status=status.HTTP_200_OK
+            )
+        else:
+            return Response(
+                {"resultado": "Empate, Ambos os Pokémons têm o mesmo peso."},
+                status=status.HTTP_200_OK
+            )

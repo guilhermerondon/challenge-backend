@@ -1,7 +1,6 @@
 from django.urls import path
-from .views import PokeAPIView
 from .views import (
-  TrainerListCreateView, PokemonListCreateView, TrainerPokemonCreateView, TrainerDetailView, PokemonDetailView, TrainerPokemonDeleteView
+  TrainerListCreateView, PokemonListCreateView, TrainerPokemonCreateView, TrainerDetailView, PokemonDetailView, TrainerPokemonDeleteView, PokeAPIView, PokemonBattleView
 )
 
 urlpatterns = [
@@ -15,4 +14,6 @@ urlpatterns = [
     path('trainer-pokemons/<int:pk>/', TrainerPokemonDeleteView.as_view()),
 
     path('pokeapi/<str:pokemon_name>/', PokeAPIView.as_view()),
+
+    path('battle/<int:pokemon1_id>/<int:pokemon2_id>/', PokemonBattleView.as_view()),
 ]  
